@@ -2,10 +2,10 @@
 
 drop table IF EXISTS endpoint_hit CASCADE;
 
-
 -- create user related tables
 
-create TABLE IF NOT EXISTS endpoint_hit (
+create TABLE IF NOT EXISTS endpoint_hit
+(
   id       BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
   app      VARCHAR(50) NOT NULL,
   uri      VARCHAR(200) NOT NULL,
