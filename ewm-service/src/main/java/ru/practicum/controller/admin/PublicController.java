@@ -2,6 +2,7 @@ package ru.practicum.controller.admin;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,11 +18,11 @@ import org.springframework.web.bind.annotation.RestController;
 public class PublicController {
 
     @GetMapping("/compilations")
-    public ResponseEntity<?> getAllCompilations(
+    public ResponseEntity<String> getAllCompilations(
             @RequestParam(name = "pinned", required = true) Boolean pinned,
             @RequestParam(name = "from", defaultValue = "0") Integer from,
             @RequestParam(name = "size", defaultValue = "0") Integer size) {
         log.info("Get compilations from {} size end {} with pinned = {}", from, size, pinned);
-        return null;
+        return new ResponseEntity<>("Hello there", HttpStatus.OK);
     }
 }
