@@ -1,7 +1,6 @@
 package ru.practicum.controller;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
@@ -22,7 +21,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 
-@Slf4j
 @RestController
 @RequestMapping
 @RequiredArgsConstructor
@@ -35,7 +33,6 @@ public class StatsController {
     @PostMapping("/hit")
     @ResponseStatus(HttpStatus.CREATED)
     public void registerEndpointHit(@RequestBody @Valid EndPointHitDto endPointHitDto) {
-        log.info("Register end point hit endPointHit = {}", endPointHitDto);
         EndpointHitEntity entity = EndPointHitMapper.toEndPointHitEntity(endPointHitDto);
         service.save(entity);
     }
@@ -48,7 +45,6 @@ public class StatsController {
                                               @RequestParam(name = "uris", required = false) Collection<String> uris,
                                               @RequestParam(name = "unique", defaultValue = "false") boolean unique)
             throws StartAfterEndException {
-        log.info("Get statistics from start {} to end {} with uris = {}, unique = {}", start, end, uris, unique);
         List<ViewStats> list = service.findAllBetweenDates(start, end, uris, unique);
         return list.stream()
                 .map(ViewStatsMapper::toViewStatsDto)

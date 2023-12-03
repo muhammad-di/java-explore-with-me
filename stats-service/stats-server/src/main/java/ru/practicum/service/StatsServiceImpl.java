@@ -1,6 +1,7 @@
 package ru.practicum.service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
@@ -14,7 +15,7 @@ import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
 
-
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class StatsServiceImpl implements StatsService {
@@ -24,6 +25,7 @@ public class StatsServiceImpl implements StatsService {
     @Transactional
     @Override
     public void save(EndpointHitEntity endpointHitEntity) {
+        log.info("Register end point hit endPointHit = {}", endpointHitEntity);
         repository.save(endpointHitEntity);
     }
 
@@ -33,6 +35,7 @@ public class StatsServiceImpl implements StatsService {
                                                LocalDateTime end,
                                                Collection<String> uris,
                                                boolean isUniqueIps) throws StartAfterEndException {
+        log.info("Get statistics from start {} to end {} with uris = {}, unique = {}", start, end, uris, isUniqueIps);
         StatsValidation.validateStartAndEnd(start, end);
         if (isUniqueIps) {
             return repository.viewStatsForUrisUniqueIps(uris, start, end);
