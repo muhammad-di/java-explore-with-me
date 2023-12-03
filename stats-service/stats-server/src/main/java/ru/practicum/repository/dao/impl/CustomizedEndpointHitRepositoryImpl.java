@@ -62,5 +62,6 @@ public class CustomizedEndpointHitRepositoryImpl implements CustomizedEndpointHi
                 .uri(uri)
                 .hits(hits)
                 .build();
+
     }
 }

@@ -10,7 +10,9 @@ import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
 
-public interface EndpointHitRepository extends JpaRepository<EndpointHitEntity, Long>, CustomizedEndpointHitRepository {
+public interface EndpointHitRepository extends
+        JpaRepository<EndpointHitEntity, Long>,
+        CustomizedEndpointHitRepository {
 
     @Query("select\n" +
             "new ru.practicum.model.ViewStats(eh.app, eh.uri, count(eh))\n" +

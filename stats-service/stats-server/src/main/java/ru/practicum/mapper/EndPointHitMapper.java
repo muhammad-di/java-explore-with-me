@@ -3,6 +3,7 @@ package ru.practicum.mapper;
 import ru.practicum.dto.EndPointHitDto;
 import ru.practicum.model.EndpointHitEntity;
 
+
 public class EndPointHitMapper {
     public static EndpointHitEntity toEndPointHitEntity(EndPointHitDto dto) {
         return EndpointHitEntity.builder()
