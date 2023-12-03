@@ -1,5 +1,6 @@
 package ru.practicum.service;
 
+import ru.practicum.exception.StartAfterEndException;
 import ru.practicum.model.EndpointHitEntity;
 import ru.practicum.model.ViewStats;
 
@@ -14,5 +15,5 @@ public interface StatsService {
     List<ViewStats> findAllBetweenDates(LocalDateTime start,
                                         LocalDateTime end,
                                         Collection<String> uris,
-                                        boolean isUniqueIps);
+                                        boolean isUniqueIps) throws StartAfterEndException;
 }

@@ -4,9 +4,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
+import ru.practicum.exception.StartAfterEndException;
 import ru.practicum.model.EndpointHitEntity;
 import ru.practicum.model.ViewStats;
 import ru.practicum.repository.EndpointHitRepository;
+import ru.practicum.validation.StatsValidation;
 
 import java.time.LocalDateTime;
 import java.util.Collection;
@@ -30,7 +32,8 @@ public class StatsServiceImpl implements StatsService {
     public List<ViewStats> findAllBetweenDates(LocalDateTime start,
                                                LocalDateTime end,
                                                Collection<String> uris,
-                                               boolean isUniqueIps) {
+                                               boolean isUniqueIps) throws StartAfterEndException {
+        StatsValidation.validateStartAndEnd(start, end);
         if (isUniqueIps) {
             return repository.viewStatsForUrisUniqueIps(uris, start, end);
         }
