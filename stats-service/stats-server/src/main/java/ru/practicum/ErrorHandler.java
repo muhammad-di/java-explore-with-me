@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import ru.practicum.exception.StartAfterEndException;
-import ru.practicum.model.ErrorResponse;
+import ru.practicum.model.ApiError;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -20,16 +20,15 @@ public class ErrorHandler {
     //    Unknown Error exception handler
     @ExceptionHandler
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public ErrorResponse handleThrowable(final Throwable e) {
-        return new ErrorResponse(e.getMessage());
+    public ApiError handleThrowable(final Throwable e) {
+        return new ApiError(HttpStatus.INTERNAL_SERVER_ERROR, "Internal server exception", e.getMessage());
     }
 
     //    RequestParam exceptions handler
     @ExceptionHandler(MissingServletRequestParameterException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ErrorResponse handleValidationExceptions(MissingServletRequestParameterException e) {
-        return new ErrorResponse(e.getMessage());
-
+    public ApiError handleValidationExceptions(MissingServletRequestParameterException e) {
+        return new ApiError(HttpStatus.BAD_REQUEST, "Incorrect request parameter", e.getMessage());
     }
 
     //    RequestBody exceptions handler
@@ -48,8 +47,8 @@ public class ErrorHandler {
     //    BAD_REQUEST
     @ExceptionHandler
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ErrorResponse handleStartAfterEndException(final StartAfterEndException e) {
+    public ApiError handleStartAfterEndException(final StartAfterEndException e) {
         e.setErrorCode(HttpStatus.BAD_REQUEST);
-        return new ErrorResponse(e.getErrorMessage());
+        return new ApiError(HttpStatus.BAD_REQUEST, "Incorrect start and end parameter", e.getMessage());
     }
 }
