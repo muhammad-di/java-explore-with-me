@@ -16,7 +16,6 @@ import javax.validation.constraints.PositiveOrZero;
 import java.time.LocalDateTime;
 import java.util.Collection;
 
-
 @RestController
 @RequestMapping(path = "/events")
 @RequiredArgsConstructor

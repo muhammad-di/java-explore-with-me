@@ -7,8 +7,7 @@ import java.util.LinkedHashMap;
 import java.util.stream.Collectors;
 
 public class ViewStatsMapper {
-    public static Collection<ViewStatsDto> toViewStatsDtoList(Object objectList) {
-        Collection<LinkedHashMap<String, Object>> list = (Collection<LinkedHashMap<String, Object>>) objectList;
+    public static Collection<ViewStatsDto> toViewStatsDtoList(Collection<LinkedHashMap<String, Object>> list) {
         return list.stream()
                 .map(ViewStatsMapper::toViewStatsDto)
                 .collect(Collectors.toList());

@@ -34,6 +34,7 @@ import ru.practicum.utils.EventsUtils;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -225,16 +226,16 @@ public class CompilationServiceImpl implements CompilationService {
 
     private long countViewsForEvent(long eventId) {
         String path;
-        Object body;
         ViewStatsDto viewStatsDto;
         ResponseEntity<Object> response;
         Collection<ViewStatsDto> viewStatsDtoList;
+        Collection<LinkedHashMap<String, Object>> body;
         LocalDateTime end = EventsUtils.getDefaultEndForEndpointHit();
         LocalDateTime start = EventsUtils.getDefaultStartForEndpointHit();
 
         path = "/events/".concat(String.valueOf(eventId));
         response = statsClient.get(start, end, List.of(path), true);
-        body = response.getBody();
+        body = (Collection<LinkedHashMap<String, Object>>) response.getBody();
         if (!ObjectUtils.isEmpty(body)) {
             viewStatsDtoList = ViewStatsMapper.toViewStatsDtoList(body);
             if (!ObjectUtils.isEmpty(viewStatsDtoList)) {
