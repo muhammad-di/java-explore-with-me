@@ -13,59 +13,57 @@ import org.springframework.web.util.DefaultUriBuilderFactory;
 import ru.practicum.dto.EndPointHitDto;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
 @Component
 public class StatsClient {
+    private static final String DATE_TIME_FORMAT = "yyyy-MM-dd HH:mm:ss";
+    private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern(DATE_TIME_FORMAT);
     protected final RestTemplate rest;
 
     @Autowired
     public StatsClient(RestTemplateBuilder builder, @Value("${stats-server.url}") String serverUrl) {
-        rest = builder
-                .uriTemplateHandler(new DefaultUriBuilderFactory(serverUrl))
-                .requestFactory(HttpComponentsClientHttpRequestFactory::new)
-                .build();
+        rest = builder.uriTemplateHandler(new DefaultUriBuilderFactory(serverUrl)).requestFactory(HttpComponentsClientHttpRequestFactory::new).build();
     }
 
     public ResponseEntity<Object> post(EndPointHitDto body) {
-        String path = "hit/";
+        String path = "/hit";
         return makeAndSendRequest(HttpMethod.POST, path, null, body);
     }
 
-    public ResponseEntity<Object> get(
-            LocalDateTime start,
-            LocalDateTime end,
-            Collection<String> uris,
-            Boolean unique) {
+    public ResponseEntity<Object> get(LocalDateTime start, LocalDateTime end, Collection<String> uris, Boolean unique) {
+        String formattedStart = start.format(formatter);
+        String formattedEnd = end.format(formatter);
+        String urisStr = String.join(",", uris);
         Map<String, Object> parameters = Map.of(
-                "start", start,
-                "end", end,
-                "uris", uris,
-                "unique", unique
-        );
-        return get(parameters);
+                "start", formattedStart,
+                "end", formattedEnd,
+                "uris", urisStr,
+                "unique", unique);
+
+        return get("/stats?start={start}&end={end}&uris={uris}&unique={unique}", parameters);
     }
 
     public ResponseEntity<Object> get(LocalDateTime start, LocalDateTime end, Collection<String> uris) {
+        String formattedStart = start.format(formatter);
+        String formattedEnd = end.format(formatter);
+        String urisStr = String.join(",", uris);
         Map<String, Object> parameters = Map.of(
-                "start", start,
-                "end", end,
-                "uris", uris
-        );
-        return get(parameters);
+                "start", formattedStart,
+                "end", formattedEnd,
+                "uris", urisStr);
+
+        return get("/stats?start={start}&end={end}&uris={uris}", parameters);
     }
 
-    private ResponseEntity<Object> get(Map<String, Object> parameters) {
-        String path = "stats/";
+    private ResponseEntity<Object> get(String path, Map<String, Object> parameters) {
         return makeAndSendRequest(HttpMethod.GET, path, parameters, null);
     }
 
-    private ResponseEntity<Object> makeAndSendRequest(HttpMethod method,
-                                                      String path,
-                                                      @Nullable Map<String, Object> parameters,
-                                                      @Nullable EndPointHitDto body) {
+    private ResponseEntity<Object> makeAndSendRequest(HttpMethod method, String path, @Nullable Map<String, Object> parameters, @Nullable EndPointHitDto body) {
         HttpEntity<EndPointHitDto> requestEntity = new HttpEntity<>(body, defaultHeaders());
 
         ResponseEntity<Object> statServerResponse;

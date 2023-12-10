@@ -36,9 +36,11 @@ public class NewEventDto {
     @NotNull
     private Location location;
 
-    private boolean paid;
+    private Boolean paid;
 
-    private boolean requestModeration;
+    private Integer participantLimit;
+
+    private Boolean requestModeration;
 
     @NotBlank
     @Size(min = 3, max = 120, message = "title should be more then 2 and less than 121 symbols")

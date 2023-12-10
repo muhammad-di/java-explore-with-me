@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import ru.practicum.model.EventStateUserAction;
 
 import javax.validation.constraints.Positive;
 import javax.validation.constraints.Size;

@@ -1,10 +1,10 @@
-package ru.practicum.dto.events;
+package ru.practicum.dto.requests;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import ru.practicum.dto.users.ParticipationRequestDto;
+import ru.practicum.dto.requests.ParticipationRequestDto;
 
 import java.util.Collection;
 

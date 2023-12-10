@@ -2,6 +2,7 @@ package ru.practicum.mapper;
 
 import ru.practicum.dto.users.NewUserRequest;
 import ru.practicum.dto.users.UserDto;
+import ru.practicum.dto.users.UserShortDto;
 import ru.practicum.model.UserEntity;
 
 
@@ -18,6 +19,13 @@ public class UserMapper {
                 .id(entity.getId())
                 .name(entity.getName())
                 .email(entity.getEmail())
+                .build();
+    }
+
+    public static UserShortDto toUserShortDto(UserEntity entity) {
+        return UserShortDto.builder()
+                .id(entity.getId())
+                .name(entity.getName())
                 .build();
     }
 }

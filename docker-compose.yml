@@ -37,8 +37,8 @@ services:
     environment:
       - STATS_SERVER_URL=http://stats-server:9090
       - POSTGRES_EWM_DB_URL=jdbc:postgresql://ewm-db:3232/ewm_db
-      - POSTGRES_EWM_USER=root
-      - POSTGRES_EWM_PASSWORD=root
+      - POSTGRES_EWM_USER=root2
+      - POSTGRES_EWM_PASSWORD=root2
 
   ewm-db:
     image: postgres:14.7-alpine
@@ -49,7 +49,7 @@ services:
     environment:
       PGPORT: 3232
       POSTGRES_DB: ewm_db
-      POSTGRES_USER: root
-      POSTGRES_PASSWORD: root
+      POSTGRES_USER: root2
+      POSTGRES_PASSWORD: root2
     volumes:
       - ./postgres_ewm_db:/var/lib/postgresql/data_ewm

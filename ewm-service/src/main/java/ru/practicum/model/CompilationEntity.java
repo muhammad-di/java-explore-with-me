@@ -1,30 +1,38 @@
-package ru.practicum.dto.users;
+package ru.practicum.model;
+
+
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import ru.practicum.dto.events.EventStatus;
 
-import java.time.LocalDateTime;
+import javax.persistence.*;
 import java.util.Objects;
+
 
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class ParticipationRequestDto {
-    private LocalDateTime created;
-    private Long event;
+@Entity
+@Table(name = "compilations")
+public class CompilationEntity {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Long requester;
-    private EventStatus status;
+
+    @Column(name = "title")
+    private String title;
+
+    @Column(name = "pinned")
+    private Boolean pinned;
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        ParticipationRequestDto that = (ParticipationRequestDto) o;
+        CompilationEntity that = (CompilationEntity) o;
         return Objects.equals(id, that.id);
     }
 
