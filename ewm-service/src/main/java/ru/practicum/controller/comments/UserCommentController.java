@@ -36,47 +36,4 @@ public class UserCommentController {
 
         return service.create(commenterId, eventId, commentEntity);
     }
-
-//    @GetMapping(path = "/{userId}/requests")
-//    public Collection<ParticipationRequestDto> findById(@Positive @PathVariable(name = "userId") Long userId)
-//            throws UserNotFoundException {
-//
-//        return service.findAll(userId).stream()
-//                .map(RequestMapper::toParticipationRequestDto)
-//                .collect(Collectors.toList());
-//    }
-//
-//    @PatchMapping(path = "/{userId}/requests/{requestId}/cancel")
-//    public ParticipationRequestDto update(@Positive @PathVariable(name = "userId") Long userId,
-//                                          @Positive @PathVariable(name = "requestId") Long requestId)
-//            throws UserNotFoundException,
-//            RequestNotFoundException,
-//            RequesterAndClaimedRequesterAreNotSameException {
-//        RequestEntity entity = service.cancel(userId, requestId);
-//
-//        return RequestMapper.toParticipationRequestDto(entity);
-//    }
-//
-//    @GetMapping(path = "/{userId}/events/{eventId}/requests")
-//    public Collection<ParticipationRequestDto> findRequestsForEvent(@Positive @PathVariable(name = "userId") Long userId,
-//                                                                    @Positive @PathVariable(name = "eventId") Long eventId)
-//            throws UserNotFoundException, IncorrectInitiatorException, EventNotFoundException {
-//
-//        return service.findRequestsForEvent(userId, eventId).stream()
-//                .map(RequestMapper::toParticipationRequestDto)
-//                .collect(Collectors.toList());
-//    }
-//
-//    @PatchMapping(path = "/{userId}/events/{eventId}/requests")
-//    public EventRequestStatusUpdateResult updateStatus(@Positive @PathVariable(name = "userId") Long userId,
-//                                                       @Positive @PathVariable(name = "eventId") Long eventId,
-//                                                       @RequestBody EventRequestStatusUpdateRequest requestBody)
-//            throws UserNotFoundException,
-//            IncorrectInitiatorException,
-//            EventNotFoundException,
-//            RequestIsNotPendingException,
-//            ParticipationLimitReachedException {
-//
-//        return service.updateRequestsStatus(userId, eventId, requestBody);
-//    }
 }
