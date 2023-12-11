@@ -43,6 +43,8 @@ public class StatsServiceImpl implements StatsService {
         if (CollectionUtils.isEmpty(uris)) {
             return repository.viewStats(start, end);
         }
-        return repository.viewStatsForUris(uris, start, end);
+        List<ViewStats> list = repository.viewStatsForUris(uris, start, end);
+        return list;
+//        return repository.viewStatsForUris(uris, start, end);
     }
 }

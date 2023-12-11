@@ -24,6 +24,7 @@ public class CustomizedEndpointHitRepositoryImpl implements CustomizedEndpointHi
     @Override
     public List<ViewStats> viewStatsForUrisUniqueIps(Collection<String> uris, LocalDateTime start, LocalDateTime end) {
         String urisJoined = String.join(", ", uris);
+
         String sqlQuery = "select \n" +
                 "eh.app as app,\n" +
                 "eh.uri as uri,\n" +
@@ -48,7 +49,9 @@ public class CustomizedEndpointHitRepositoryImpl implements CustomizedEndpointHi
                         "group by eh.app, eh.uri\n" +
                         "order by hits desc"
         );
-        return jdbcTemplate.query(sqlQuery, this::mapRowToDirector, start, end, urisJoined);
+
+        List<ViewStats> list = jdbcTemplate.query(sqlQuery, this::mapRowToDirector, start, end, urisJoined);
+        return list;
     }
 
 
