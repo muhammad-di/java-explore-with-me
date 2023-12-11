@@ -1,4 +1,5 @@
 -- delete all tables
+DROP TABLE IF EXISTS comments CASCADE;
 DROP TABLE IF EXISTS compilations_events CASCADE;
 DROP TABLE IF EXISTS compilations CASCADE;
 DROP TABLE IF EXISTS requests CASCADE;
@@ -68,5 +69,17 @@ CREATE TABLE IF NOT EXISTS compilations_events (
 	event_id        BIGINT NOT NULL,
 	CONSTRAINT compilations_events_pkey PRIMARY KEY (id),
 	CONSTRAINT fk_compilations_events_to_compilations FOREIGN KEY (compilation_id) REFERENCES compilations(id)
+);
+
+CREATE TABLE IF NOT EXISTS comments (
+	id           BIGINT NOT NULL GENERATED ALWAYS AS IDENTITY,
+	created	     TIMESTAMP NOT NULL,
+	event_id     BIGINT NOT NULL,
+	commenter_id BIGINT NOT NULL,
+	text         VARCHAR(2000) NOT NULL,
+	state        VARCHAR(9) NOT NULL DEFAULT 'PUBLISHED',
+	CONSTRAINT comments_pkey PRIMARY KEY (id),
+	CONSTRAINT fk_comments_to_events FOREIGN KEY (event_id) REFERENCES events(id),
+	CONSTRAINT fk_comments_to_users FOREIGN KEY (commenter_id) REFERENCES users(id)
 );
 
