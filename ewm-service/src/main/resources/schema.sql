@@ -73,7 +73,7 @@ CREATE TABLE IF NOT EXISTS compilations_events (
 
 CREATE TABLE IF NOT EXISTS comments (
 	id           BIGINT NOT NULL GENERATED ALWAYS AS IDENTITY,
-	created	     TIMESTAMP NOT NULL,
+	created_on   TIMESTAMP NOT NULL,
 	event_id     BIGINT NOT NULL,
 	commenter_id BIGINT NOT NULL,
 	text         VARCHAR(2000) NOT NULL,

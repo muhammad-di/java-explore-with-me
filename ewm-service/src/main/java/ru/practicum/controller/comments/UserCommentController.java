@@ -36,4 +36,27 @@ public class UserCommentController {
 
         return service.create(commenterId, eventId, commentEntity);
     }
+
+    @GetMapping(path = "/{userId}/comments/{commentId}")
+    public CommentDto findById(@Positive @PathVariable(name = "userId") Long commenterId,
+                               @Positive @PathVariable(name = "commentId") Long commentId)
+            throws UserNotFoundException,
+            CommentNotFoundException,
+            EventIsNotPublishedException,
+            CommenterAndInitiatorAreSameException,
+            CommentOwnerAndClaimToBeOwnerUserAreDifferentException {
+
+        return service.findById(commenterId, commentId);
+    }
+
+    @DeleteMapping(path = "/{userId}/comments/{commentId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteById(@Positive @PathVariable(name = "userId") Long commenterId,
+                           @Positive @PathVariable(name = "commentId") Long commentId)
+            throws UserNotFoundException,
+            CommentNotFoundException,
+            CommentOwnerAndClaimToBeOwnerUserAreDifferentException {
+
+        service.deleteById(commenterId, commentId);
+    }
 }

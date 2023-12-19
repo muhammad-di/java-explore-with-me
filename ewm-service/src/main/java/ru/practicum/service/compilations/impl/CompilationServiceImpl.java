@@ -227,17 +227,15 @@ public class CompilationServiceImpl implements CompilationService {
     private long countViewsForEvent(long eventId) {
         String path;
         ViewStatsDto viewStatsDto;
-        ResponseEntity<Object> response;
         Collection<ViewStatsDto> viewStatsDtoList;
-        Collection<LinkedHashMap<String, Object>> body;
+        Collection<LinkedHashMap<String, Object>> response;
         LocalDateTime end = EventsUtils.getDefaultEndForEndpointHit();
         LocalDateTime start = EventsUtils.getDefaultStartForEndpointHit();
 
         path = "/events/".concat(String.valueOf(eventId));
         response = statsClient.get(start, end, List.of(path), true);
-        body = (Collection<LinkedHashMap<String, Object>>) response.getBody();
-        if (!ObjectUtils.isEmpty(body)) {
-            viewStatsDtoList = ViewStatsMapper.toViewStatsDtoList(body);
+        if (!ObjectUtils.isEmpty(response)) {
+            viewStatsDtoList = ViewStatsMapper.toViewStatsDtoList(response);
             if (!ObjectUtils.isEmpty(viewStatsDtoList)) {
                 viewStatsDto = viewStatsDtoList.stream()
                         .findFirst()

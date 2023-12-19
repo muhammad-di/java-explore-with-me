@@ -15,6 +15,7 @@ import ru.practicum.dto.EndPointHitDto;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Collection;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -34,7 +35,7 @@ public class StatsClient {
         return makeAndSendRequest(HttpMethod.POST, path, null, body);
     }
 
-    public ResponseEntity<Object> get(LocalDateTime start, LocalDateTime end, Collection<String> uris, Boolean unique) {
+    public Collection<LinkedHashMap<String, Object>> get(LocalDateTime start, LocalDateTime end, Collection<String> uris, Boolean unique) {
         String formattedStart = start.format(formatter);
         String formattedEnd = end.format(formatter);
         String urisStr = String.join(",", uris);
@@ -47,7 +48,7 @@ public class StatsClient {
         return get("/stats?start={start}&end={end}&uris={uris}&unique={unique}", parameters);
     }
 
-    public ResponseEntity<Object> get(LocalDateTime start, LocalDateTime end, Collection<String> uris) {
+    public Collection<LinkedHashMap<String, Object>> get(LocalDateTime start, LocalDateTime end, Collection<String> uris) {
         String formattedStart = start.format(formatter);
         String formattedEnd = end.format(formatter);
         String urisStr = String.join(",", uris);
@@ -59,8 +60,9 @@ public class StatsClient {
         return get("/stats?start={start}&end={end}&uris={uris}", parameters);
     }
 
-    private ResponseEntity<Object> get(String path, Map<String, Object> parameters) {
-        return makeAndSendRequest(HttpMethod.GET, path, parameters, null);
+    private Collection<LinkedHashMap<String, Object>> get(String path, Map<String, Object> parameters) {
+        ResponseEntity<Object> response = makeAndSendRequest(HttpMethod.GET, path, parameters, null);
+        return (Collection<LinkedHashMap<String, Object>>) response.getBody();
     }
 
     private ResponseEntity<Object> makeAndSendRequest(HttpMethod method, String path, @Nullable Map<String, Object> parameters, @Nullable EndPointHitDto body) {

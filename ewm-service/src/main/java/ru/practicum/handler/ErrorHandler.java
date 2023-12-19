@@ -93,6 +93,16 @@ public class ErrorHandler {
                 e.getMessage());
     }
 
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ApiError handleCommentOwnerAndClaimToBeOwnerUserAreDifferentException(
+            final CommentOwnerAndClaimToBeOwnerUserAreDifferentException e) {
+        return new ApiError(HttpStatus.BAD_REQUEST,
+                "For the requested operation the conditions are not met.",
+                e.getMessage());
+    }
+
+
     // CONFLICT ////////////////////////////////////////////////////////////////////////////////////////////////////////
     @ExceptionHandler
     @ResponseStatus(HttpStatus.CONFLICT)
@@ -184,6 +194,12 @@ public class ErrorHandler {
     @ExceptionHandler
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ApiError handleCompilationNotFoundException(final CompilationNotFoundException e) {
+        return new ApiError(HttpStatus.NOT_FOUND, "The required event was not found.", e.getMessage());
+    }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ApiError handleCommentNotFoundException(final CommentNotFoundException e) {
         return new ApiError(HttpStatus.NOT_FOUND, "The required event was not found.", e.getMessage());
     }
 

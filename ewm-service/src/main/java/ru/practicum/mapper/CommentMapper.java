@@ -1,6 +1,7 @@
 package ru.practicum.mapper;
 
 import ru.practicum.dto.comments.CommentDto;
+import ru.practicum.dto.comments.CommentShortDto;
 import ru.practicum.dto.comments.NewCommentDto;
 import ru.practicum.dto.events.EventShortDto;
 import ru.practicum.model.CommentEntity;
@@ -22,6 +23,15 @@ public class CommentMapper {
                 .event(eventShortDto)
                 .state(commentEntity.getState())
                 .text(commentEntity.getText())
+                .build();
+    }
+
+    public static CommentShortDto toCommentShortDto(CommentEntity entity) {
+        return CommentShortDto.builder()
+                .id(entity.getId())
+                .commenter(entity.getCommenter().getName())
+                .createdOn(entity.getCreated())
+                .text(entity.getText())
                 .build();
     }
 }

@@ -22,7 +22,7 @@ public class CommentEntity {
     @Column(name = "text")
     private String text;
 
-    @Column(name = "created")
+    @Column(name = "created_on")
     private LocalDateTime created;
 
     @ManyToOne(fetch = FetchType.LAZY)

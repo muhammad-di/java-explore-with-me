@@ -6,10 +6,12 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import ru.practicum.dto.categories.CategoryDto;
+import ru.practicum.dto.comments.CommentShortDto;
 import ru.practicum.dto.users.UserShortDto;
 import ru.practicum.model.EventState;
 
 import java.time.LocalDateTime;
+import java.util.Collection;
 import java.util.Objects;
 
 @Data
@@ -36,6 +38,7 @@ public class EventFullDto {
     private EventState state;
     private String title;
     private Long views;
+    private Collection<CommentShortDto> comments;
 
     @Override
     public boolean equals(Object o) {

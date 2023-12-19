@@ -3,15 +3,13 @@ package ru.practicum.service.comments.impl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
 import ru.practicum.client.StatsClient;
 import ru.practicum.dto.ViewStatsDto;
 import ru.practicum.dto.comments.CommentDto;
 import ru.practicum.dto.events.EventShortDto;
-import ru.practicum.exception.CommenterAndInitiatorAreSameException;
-import ru.practicum.exception.EventIsNotPublishedException;
-import ru.practicum.exception.EventNotFoundException;
-import ru.practicum.exception.UserNotFoundException;
+import ru.practicum.exception.*;
 import ru.practicum.mapper.CommentMapper;
 import ru.practicum.mapper.EventMapper;
 import ru.practicum.mapper.ViewStatsMapper;
@@ -44,6 +42,7 @@ public class CommentServiceImpl implements CommentsService {
 
 
     @Override
+    @Transactional
     public CommentDto create(Long commenterId, Long eventId, CommentEntity commentEntity)
             throws CommenterAndInitiatorAreSameException, EventIsNotPublishedException, UserNotFoundException, EventNotFoundException {
         EventEntity eventEntity;
@@ -63,6 +62,50 @@ public class CommentServiceImpl implements CommentsService {
         return CommentMapper.toCommentDto(commentEntityFromDB, eventShortDto);
     }
 
+    @Override
+    @Transactional(readOnly = true)
+    public CommentDto findById(Long commenterId, Long commentId)
+            throws UserNotFoundException,
+            CommentNotFoundException,
+            EventIsNotPublishedException,
+            CommenterAndInitiatorAreSameException,
+            CommentOwnerAndClaimToBeOwnerUserAreDifferentException {
+        EventEntity eventEntity;
+        EventShortDto eventShortDto;
+        CommentEntity commentEntity;
+        UserEntity commenterEntity;
+        UserEntity claimsToBeCommenterEntity;
+
+
+        claimsToBeCommenterEntity = findUserById(commenterId);
+        commentEntity = findCommentById(commentId);
+        commenterEntity = commentEntity.getCommenter();
+        eventEntity = commentEntity.getEvent();
+        CommentValidation.validate(commenterEntity, claimsToBeCommenterEntity);
+        commentEntity.setCommenter(claimsToBeCommenterEntity);
+        commentEntity.setEvent(eventEntity);
+        eventShortDto = getEventShortDto(eventEntity);
+
+        return CommentMapper.toCommentDto(commentEntity, eventShortDto);
+    }
+
+    @Override
+    @Transactional
+    public void deleteById(Long commenterId, Long commentId)
+            throws UserNotFoundException,
+            CommentNotFoundException,
+            CommentOwnerAndClaimToBeOwnerUserAreDifferentException {
+        UserEntity commenterEntity;
+        CommentEntity commentEntity;
+        UserEntity claimsToBeCommenterEntity;
+
+        claimsToBeCommenterEntity = findUserById(commenterId);
+        commentEntity = findCommentById(commentId);
+        commenterEntity = commentEntity.getCommenter();
+        CommentValidation.validate(commenterEntity, claimsToBeCommenterEntity);
+        commentRepository.deleteById(commentId);
+    }
+
     //Common methods
     private UserEntity findUserById(Long userId) throws UserNotFoundException {
         return userRepository.findById(userId)
@@ -77,6 +120,14 @@ public class CommentServiceImpl implements CommentsService {
                 .orElseThrow(() -> {
                     String message = String.format("an event with id { %d } was not found", eventId);
                     return new EventNotFoundException(message);
+                });
+    }
+
+    private CommentEntity findCommentById(Long commentId) throws CommentNotFoundException {
+        return commentRepository.findById(commentId)
+                .orElseThrow(() -> {
+                    String message = String.format("a comment with id { %d } was not found", commentId);
+                    return new CommentNotFoundException(message);
                 });
     }
 
@@ -120,17 +171,15 @@ public class CommentServiceImpl implements CommentsService {
     private long countViewsForEvent(long eventId) {
         String path;
         ViewStatsDto viewStatsDto;
-        ResponseEntity<Object> response;
         Collection<ViewStatsDto> viewStatsDtoList;
-        Collection<LinkedHashMap<String, Object>> body;
+        Collection<LinkedHashMap<String, Object>> response;
         LocalDateTime end = EventsUtils.getDefaultEndForEndpointHit();
         LocalDateTime start = EventsUtils.getDefaultStartForEndpointHit();
 
         path = "/events/".concat(String.valueOf(eventId));
         response = statsClient.get(start, end, List.of(path), true);
-        body = (Collection<LinkedHashMap<String, Object>>) response.getBody();
-        if (!ObjectUtils.isEmpty(body)) {
-            viewStatsDtoList = ViewStatsMapper.toViewStatsDtoList(body);
+        if (!ObjectUtils.isEmpty(response)) {
+            viewStatsDtoList = ViewStatsMapper.toViewStatsDtoList(response);
             if (!ObjectUtils.isEmpty(viewStatsDtoList)) {
                 viewStatsDto = viewStatsDtoList.stream()
                         .findFirst()
