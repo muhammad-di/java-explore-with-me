@@ -339,7 +339,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n    \"annotation\": \"A nobis delectus veritatis. Voluptatem ut quaerat quia. Dolore dolorem vel quia veritatis aut.\",\n    \"category\": 1,\n    \"description\": \"Qui et sequi tenetur possimus odit consectetur. Cupiditate commodi laboriosam. Porro cum quia non ut nam enim eum eos. Consequatur dicta temporibus et ad reprehenderit beatae a.\\n \\rQui et exercitationem ab hic ratione ea et neque id. Vel amet rerum soluta. Consectetur ut beatae vero consequatur quas maiores blanditiis molestias totam. Amet dolore exercitationem qui nam quisquam quo repudiandae et. Et consectetur commodi doloremque neque nam sed reprehenderit.\\n \\rQuasi quasi omnis perferendis. Accusantium ipsam iusto illum facilis ut corrupti aut libero. Sunt natus consequatur non consequatur enim. Nemo qui consectetur laborum molestiae ratione pariatur cum. Odio suscipit maiores nisi temporibus earum temporibus quidem quo veritatis. Laborum debitis eos assumenda id neque fugit voluptate fuga ipsa.\",\n    \"eventDate\": \"2024-12-15 02:00:52\",\n    \"location\": {\n        \"lat\": -79.4466,\n        \"lon\": 176.5634\n    },\n    \"paid\": false,\n    \"participantLimit\": 635,\n    \"requestModeration\": true,\n    \"stateAction\": \"PUBLISH_EVENT\",\n    \"title\": \"Asperiores praesentium doloremque ut magnam consequatur tempore dolor.\"\n}",
+              "raw": "{\n    \"annotation\": \"A nobis delectus veritatis. Voluptatem ut quaerat quia. Dolore dolorem vel quia veritatis aut.\",\n    \"category\": 121,\n    \"description\": \"Qui et sequi tenetur possimus odit consectetur. Cupiditate commodi laboriosam. Porro cum quia non ut nam enim eum eos. Consequatur dicta temporibus et ad reprehenderit beatae a.\\n \\rQui et exercitationem ab hic ratione ea et neque id. Vel amet rerum soluta. Consectetur ut beatae vero consequatur quas maiores blanditiis molestias totam. Amet dolore exercitationem qui nam quisquam quo repudiandae et. Et consectetur commodi doloremque neque nam sed reprehenderit.\\n \\rQuasi quasi omnis perferendis. Accusantium ipsam iusto illum facilis ut corrupti aut libero. Sunt natus consequatur non consequatur enim. Nemo qui consectetur laborum molestiae ratione pariatur cum. Odio suscipit maiores nisi temporibus earum temporibus quidem quo veritatis. Laborum debitis eos assumenda id neque fugit voluptate fuga ipsa.\",\n    \"eventDate\": \"2024-12-15 02:00:52\",\n    \"location\": {\n        \"lat\": -79.4466,\n        \"lon\": 176.5634\n    },\n    \"paid\": false,\n    \"participantLimit\": 635,\n    \"requestModeration\": true,\n    \"stateAction\": \"PUBLISH_EVENT\",\n    \"title\": \"Asperiores praesentium doloremque ut magnam consequatur tempore dolor.\"\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -359,7 +359,7 @@
               "variable": [
                 {
                   "key": "eventId",
-                  "value": "1",
+                  "value": "106",
                   "description": "(Required) id события"
                 }
               ]
@@ -437,7 +437,7 @@
               }
             },
             "url": {
-              "raw": "{{baseUrl}}/users/:userId/comments?eventId=1",
+              "raw": "{{baseUrl}}/users/:userId/comments?eventId=106",
               "host": [
                 "{{baseUrl}}"
               ],
@@ -449,13 +449,13 @@
               "query": [
                 {
                   "key": "eventId",
-                  "value": "1"
+                  "value": "106"
                 }
               ],
               "variable": [
                 {
                   "key": "userId",
-                  "value": "2"
+                  "value": "137"
                 }
               ]
             },
@@ -547,7 +547,7 @@
               "variable": [
                 {
                   "key": "userId",
-                  "value": "2"
+                  "value": "137"
                 },
                 {
                   "key": "commentId",
@@ -645,7 +645,7 @@
               "variable": [
                 {
                   "key": "id",
-                  "value": "1",
+                  "value": "106",
                   "description": "(Required) id события"
                 }
               ]
@@ -709,7 +709,7 @@
               "variable": [
                 {
                   "key": "userId",
-                  "value": "2"
+                  "value": "137"
                 },
                 {
                   "key": "commentId",
