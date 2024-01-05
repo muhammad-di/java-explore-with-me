@@ -43,6 +43,4 @@ public class EventsUtils {
     public static LocalDateTime getDefaultEndForEndpointHit() {
         return LocalDateTime.of(2055, 1, 1, 0, 0);
     }
-
-
 }

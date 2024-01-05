@@ -34,12 +34,12 @@ public class RequestValidation {
             throws RequesterAndClaimedRequesterAreNotSameException {
         long claimedRequesterId = claimedRequesterEntity.getId();
         long requesterId = requestEntity.getRequester().getId();
-        String message = String
-                .format("Field: requester. " +
-                        "Error: wrong requester id. " +
-                        "Value: %s", claimedRequesterId);
 
         if (requesterId != claimedRequesterId) {
+            String message = String
+                    .format("Field: requester. " +
+                            "Error: wrong requester id. " +
+                            "Value: %s", claimedRequesterId);
             throw new RequesterAndClaimedRequesterAreNotSameException(message);
         }
 
@@ -49,12 +49,12 @@ public class RequestValidation {
             throws RequesterAndInitiatorAreSameException {
         long requesterId = requesterEntity.getId();
         long initiatorId = eventEntity.getInitiator().getId();
-        String message = String
-                .format("Field: requester. " +
-                        "Error: requester should not be initiator. " +
-                        "Value: %s", requesterId);
 
         if (requesterId == initiatorId) {
+            String message = String
+                    .format("Field: requester. " +
+                            "Error: requester should not be initiator. " +
+                            "Value: %s", requesterId);
             throw new RequesterAndInitiatorAreSameException(message);
         }
     }
@@ -62,24 +62,24 @@ public class RequestValidation {
     private static void validateEventPublished(EventEntity eventEntity)
             throws EventIsNotPublishedException {
         EventState state = eventEntity.getState();
-        String message = String
-                .format("Field: state. " +
-                        "Error: state should be PUBLISHED. " +
-                        "Value: %s", state);
 
         if (!state.equals(EventState.PUBLISHED)) {
+            String message = String
+                    .format("Field: state. " +
+                            "Error: state should be PUBLISHED. " +
+                            "Value: %s", state);
             throw new EventIsNotPublishedException(message);
         }
     }
 
     private static void validateRequestPending(RequestEntity requestEntity) throws RequestIsNotPendingException {
         RequestStatus status = requestEntity.getStatus();
-        String message = String
-                .format("Field: status. " +
-                        "Error: status should be PENDING. " +
-                        "Value: %s", status);
 
         if (!status.equals(RequestStatus.PENDING)) {
+            String message = String
+                    .format("Field: status. " +
+                            "Error: status should be PENDING. " +
+                            "Value: %s", status);
             throw new RequestIsNotPendingException(message);
         }
     }
@@ -87,12 +87,12 @@ public class RequestValidation {
     private static void validateParticipationLimitIsNotReached(EventEntity eventEntity, long confirmedRequests)
             throws ParticipationLimitReachedException {
         long participationLimit = eventEntity.getParticipantLimit();
-        String message = String
-                .format("Field: participationLimit. " +
-                        "Error: participation limit is reached. " +
-                        "Value: %s", participationLimit);
 
         if (participationLimit != 0 && participationLimit <= confirmedRequests) {
+            String message = String
+                    .format("Field: participationLimit. " +
+                            "Error: participation limit is reached. " +
+                            "Value: %s", participationLimit);
             throw new ParticipationLimitReachedException(message);
         }
     }

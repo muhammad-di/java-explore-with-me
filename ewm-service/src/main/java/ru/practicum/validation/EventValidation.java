@@ -64,12 +64,12 @@ public class EventValidation {
             throws IncorrectInitiatorException {
         long claimedInitiatorId = claimedInitiator.getId();
         long initiatorId = entity.getInitiator().getId();
-        String message = String
-                .format("Field: eventDate. " +
-                        "Error: wrong initiator id. " +
-                        "Value: %s", claimedInitiatorId);
 
         if (initiatorId != claimedInitiatorId) {
+            String message = String
+                    .format("Field: eventDate. " +
+                            "Error: wrong initiator id. " +
+                            "Value: %s", claimedInitiatorId);
             throw new IncorrectInitiatorException(message);
         }
     }
@@ -79,13 +79,12 @@ public class EventValidation {
         if (ObjectUtils.isEmpty(rangeStart) || ObjectUtils.isEmpty(rangeEnd)) {
             return;
         }
-        String message = String
-                .format("Field: eventDate. " +
-                        "Error: wrong initiator id. " +
-                        "Value:rangeStart %s " +
-                        "Value:rangeEnd %s ", rangeStart, rangeEnd);
-
         if (rangeStart.isAfter(rangeEnd)) {
+            String message = String
+                    .format("Field: eventDate. " +
+                            "Error: wrong initiator id. " +
+                            "Value:rangeStart %s " +
+                            "Value:rangeEnd %s ", rangeStart, rangeEnd);
             throw new RangeStartIsAfterRangeEndException(message);
         }
     }
@@ -93,9 +92,9 @@ public class EventValidation {
     public static void validateEventIsPublished(EventEntity entity)
             throws EventIsNotPublishedForPublicException {
         EventState state = entity.getState();
-        String message = String.format("Cannot access the event because it's not in the right state: %s", state);
 
         if (!state.equals(EventState.PUBLISHED)) {
+            String message = String.format("Cannot access the event because it's not in the right state: %s", state);
             throw new EventIsNotPublishedForPublicException(message);
         }
     }
@@ -103,12 +102,12 @@ public class EventValidation {
     private static void validateEventStartsAfterTwoHours(LocalDateTime eventDate)
             throws EventDateBeforeTwoHoursException {
         LocalDateTime timeAfterWhichEventCanStart = LocalDateTime.now().plusHours(MIN_INTERVAL_FOR_CREATING_BEFORE_EVENT);
-        String message = String
-                .format("Field: eventDate. " +
-                        "Error: should contain date which is after 2 hours from current time. " +
-                        "Value: %s", eventDate);
 
         if (eventDate.isBefore(timeAfterWhichEventCanStart)) {
+            String message = String
+                    .format("Field: eventDate. " +
+                            "Error: should contain date which is after 2 hours from current time. " +
+                            "Value: %s", eventDate);
             throw new EventDateBeforeTwoHoursException(message);
         }
     }
@@ -116,24 +115,24 @@ public class EventValidation {
     private static void validateEventStartsAfterOneHourFromPublishing(LocalDateTime eventDate)
             throws EventDateBeforeOneHourFromPublishingException {
         LocalDateTime timeAfterWhichEventCanStart = LocalDateTime.now().plusHours(MIN_INTERVAL_FOR_PUBLISHING_BEFORE_EVENT);
-        String message = String
-                .format("Field: eventDate. " +
-                        "Error: should contain date which is after 1 hour from publishing time. " +
-                        "Value: %s", eventDate);
 
         if (eventDate.isBefore(timeAfterWhichEventCanStart)) {
+            String message = String
+                    .format("Field: eventDate. " +
+                            "Error: should contain date which is after 1 hour from publishing time. " +
+                            "Value: %s", eventDate);
             throw new EventDateBeforeOneHourFromPublishingException(message);
         }
     }
 
     private static void validateEventDateNotInPast(LocalDateTime eventDate) throws EventDateInPastException {
         LocalDateTime currentDateTime = LocalDateTime.now();
-        String message = String
-                .format("Field: eventDate. " +
-                        "Error: should contain date which is not in past. " +
-                        "Value: %s", eventDate);
 
         if (eventDate.isBefore(currentDateTime)) {
+            String message = String
+                    .format("Field: eventDate. " +
+                            "Error: should contain date which is not in past. " +
+                            "Value: %s", eventDate);
             throw new EventDateInPastException(message);
         }
     }
@@ -141,9 +140,9 @@ public class EventValidation {
     private static void validateEventIsNotPublished(EventEntity entity)
             throws EventIsAlreadyPublishedException {
         EventState state = entity.getState();
-        String message = String.format("Cannot publish the event because it's not in the right state: %s", state);
 
         if (state.equals(EventState.PUBLISHED)) {
+            String message = String.format("Cannot publish the event because it's not in the right state: %s", state);
             throw new EventIsAlreadyPublishedException(message);
         }
     }
@@ -151,9 +150,9 @@ public class EventValidation {
     private static void validateEventIsNotCanceledBeforePublishing(EventEntity entity)
             throws EventIsAlreadyCanceledException {
         EventState state = entity.getState();
-        String message = String.format("Cannot publish the event because it's not in the right state: %s", state);
 
         if (state.equals(EventState.CANCELED)) {
+            String message = String.format("Cannot publish the event because it's not in the right state: %s", state);
             throw new EventIsAlreadyCanceledException(message);
         }
     }
@@ -161,9 +160,9 @@ public class EventValidation {
     private static void validateEventIsNotPublishedBeforeCanceling(EventEntity entity)
             throws EventIsAlreadyPublishedException {
         EventState state = entity.getState();
-        String message = String.format("Cannot cancel the event because it's not in the right state: %s", state);
 
         if (state.equals(EventState.PUBLISHED)) {
+            String message = String.format("Cannot cancel the event because it's not in the right state: %s", state);
             throw new EventIsAlreadyPublishedException(message);
         }
     }

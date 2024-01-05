@@ -5,7 +5,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
@@ -13,15 +12,18 @@ import org.springframework.util.ObjectUtils;
 import ru.practicum.client.StatsClient;
 import ru.practicum.dto.EndPointHitDto;
 import ru.practicum.dto.ViewStatsDto;
+import ru.practicum.dto.comments.CommentShortDto;
 import ru.practicum.dto.events.EventFullDto;
 import ru.practicum.dto.events.EventShortDto;
 import ru.practicum.dto.events.UpdateEventAdminRequest;
 import ru.practicum.dto.events.UpdateEventUserRequest;
 import ru.practicum.exception.*;
+import ru.practicum.mapper.CommentMapper;
 import ru.practicum.mapper.EventMapper;
 import ru.practicum.mapper.ViewStatsMapper;
 import ru.practicum.model.*;
 import ru.practicum.repository.categories.CategoryRepository;
+import ru.practicum.repository.comments.CommentRepository;
 import ru.practicum.repository.events.EventRepository;
 import ru.practicum.repository.requests.RequestRepository;
 import ru.practicum.repository.users.UserRepository;
@@ -44,6 +46,7 @@ public class EventServiceImpl implements EventService {
     private final StatsClient statsClient;
     private final UserRepository userRepository;
     private final EventRepository eventRepository;
+    private final CommentRepository commentRepository;
     private final RequestRepository requestRepository;
     private final CategoryRepository categoryRepository;
 
@@ -89,6 +92,7 @@ public class EventServiceImpl implements EventService {
         eventFullDto = EventMapper.toEventFullDto(entity);
         setConfirmedRequests(eventFullDto);
         setViewsForEvent(eventFullDto);
+        setCommentShortDtoList(eventFullDto);
 
         return eventFullDto;
     }
@@ -296,17 +300,15 @@ public class EventServiceImpl implements EventService {
     private long countViewsForEvent(long eventId) {
         String path;
         ViewStatsDto viewStatsDto;
-        ResponseEntity<Object> response;
         Collection<ViewStatsDto> viewStatsDtoList;
-        Collection<LinkedHashMap<String, Object>> body;
+        Collection<LinkedHashMap<String, Object>> response;
         LocalDateTime end = EventsUtils.getDefaultEndForEndpointHit();
         LocalDateTime start = EventsUtils.getDefaultStartForEndpointHit();
 
         path = "/events/".concat(String.valueOf(eventId));
         response = statsClient.get(start, end, List.of(path), true);
-        body = (Collection<LinkedHashMap<String, Object>>) response.getBody();
-        if (!ObjectUtils.isEmpty(body)) {
-            viewStatsDtoList = ViewStatsMapper.toViewStatsDtoList(body);
+        if (!ObjectUtils.isEmpty(response)) {
+            viewStatsDtoList = ViewStatsMapper.toViewStatsDtoList(response);
             if (!ObjectUtils.isEmpty(viewStatsDtoList)) {
                 viewStatsDto = viewStatsDtoList.stream()
                         .findFirst()
@@ -330,6 +332,30 @@ public class EventServiceImpl implements EventService {
                 .build();
 
         statsClient.post(body);
+    }
+
+
+//    get comments
+
+    private void setCommentShortDtoList(EventFullDto eventFullDto) {
+        Long eventId;
+        Collection<CommentEntity> commentEntities;
+        Collection<CommentShortDto> commentShortDtoList;
+
+        eventId = eventFullDto.getId();
+        commentEntities = getCommentsByEventId(eventId);
+        commentShortDtoList = getCommentShortList(commentEntities);
+        eventFullDto.setComments(commentShortDtoList);
+    }
+
+    private Collection<CommentShortDto> getCommentShortList(Collection<CommentEntity> commentEntities) {
+        return commentEntities.stream()
+                .map(CommentMapper::toCommentShortDto)
+                .collect(Collectors.toList());
+    }
+
+    private Collection<CommentEntity> getCommentsByEventId(Long eventId) {
+        return commentRepository.findAllByEventIdOrderByCreatedDesc(eventId);
     }
 
 
